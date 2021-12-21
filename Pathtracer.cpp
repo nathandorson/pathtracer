@@ -20,13 +20,11 @@ Pathtracer::Pathtracer(int raysPerPixel, int d, int branchesPerLevel, float prob
     probability = prob;
     
     // Info about how everything is displayed
-    rows = 240;
-    columns = 320;
+    rows = 360;
+    columns = 480;
     fov = 90;
     camera = Camera(Vector(-1.0,0.0,3.0), 0.0f, 0.0f, rows, columns, fov);
-
-    // Create a pointer object of the devices class
-	board = new Devices(); 
+    // need some way to write pixels to screen
 }
 
 //Class destructor calls to delete the board which implements finalize to release the memory from use
@@ -37,7 +35,6 @@ Pathtracer::~Pathtracer()
         Shape* s = scene.at(i);
         delete s;
     }
-    delete board;
 }
 
 void Pathtracer::setup()
@@ -68,12 +65,11 @@ void Pathtracer::setup()
 
 void Pathtracer::main()
 {
-    
-    int algo = 0; //use monte carlo algorithm w/ no optimization by default
-    int prevKey = -1;
-    int key = -1;   
 
-    cout << "You can interact with the pathtracer via the keypad!" << endl;
+    int algo = 0; //use monte carlo algorithm w/ no optimization by default
+    char key = 'z';   
+
+    cout << "You can interact with the pathtracer via the keyboard!" << endl;
     cout << "Available commands:" << endl;
     cout << "\t(1) - Move camera left" << endl;
     cout << "\t(2) - Move camera right" << endl;
@@ -85,97 +81,94 @@ void Pathtracer::main()
     cout << "\t(8) - Move light right" << endl;
     cout << "\t(9) - Move light away from camera" << endl;
     cout << "\t(0) - Move light closer to camera" << endl;
-    cout << "\t(A) - Set pathtracer to use unoptimized algorithm (default)" << endl;
-    cout << "\t(B) - Set pathtracer to use optimized algorithm" << endl;
-    cout << "\t(D) - Stop program" << endl;
-    cout << "\t(*) - Render a new frame" << endl;
+    cout << "\t(a) - Set pathtracer to use unoptimized algorithm (default)" << endl;
+    cout << "\t(b) - Set pathtracer to use optimized algorithm" << endl;
+    cout << "\t(c) - Stop program" << endl;
+    cout << "\t(r) - Render a new frame" << endl;
     cout << "------------------------------------------------------" << endl;
 
-    board->SetUpKeypad();
+    sf::RenderWindow window(sf::VideoMode(480, 360), "Pathtracer");
 
-    while(key != 15)
+
+    while(key != 'c')
     {
-        key = board->PollKeypad();
-        if(key != prevKey)
-        {
-            switch(key){
-                case (-1):
-                    break;
-                case (0):
-                    moveCamera(Vector(0,-1.0f,0));
-                    cout << "Moved camera left\n";
-                    break;
-                case (1):
-                    moveCamera(Vector(0,1.0f,0));
-                    cout << "Moved camera right\n";
-                    break;
-                case (2):
-                    rotateCamera(0,-0.1f);
-                    cout << "Rotated camera left\n";
-                    break;
-                case (4):
-                    rotateCamera(0,0.1f);
-                    cout << "Rotated camera right\n";
-                    break;
-                case (5):
-                    rotateCamera(-0.1f,0);
-                    cout << "Pitched camera up\n";
-                    break;
-                case (6):
-                    rotateCamera(0.1f,0);
-                    cout << "Pitched camera down\n";
-                    break;
-                case (8):
-                    moveLight(Vector(0.0,-1.0f,0.0));
-                    cout << "Moved light left\n";
-                    break;
-                case (9):
-                    moveLight(Vector(0.0,1.0f,0.0));
-                    cout << "Moved light right\n";
-                    break;
-                case (10):
-                    moveLight(Vector(1.0f,0.0,0.0));
-                    cout << "Moved light away\n";
-                    break;
-                case (13):
-                    moveLight(Vector(-1.0f,0.0,0.0));
-                    cout << "Moved light closer\n";
-                    break;
-                case (3):
-                    algo = 0;
-                    cout << "Using default Monte Carlo pathtracer algorithm\n";
-                    break;
-                case (7):
-                    algo = 1;
-                    cout << "Now using interpolation algorithm\n";
-                    break;
-                case (12):
-                    {
-                        cout << "Rendering scene..." << endl;
-                        board->StartTimer();   
+        cin >> key;
+        switch(key){
+            case (-1):
+                break;
+            case ('1'):
+                moveCamera(Vector(0,-1.0f,0));
+                cout << "Moved camera left\n";
+                break;
+            case ('2'):
+                moveCamera(Vector(0,1.0f,0));
+                cout << "Moved camera right\n";
+                break;
+            case ('3'):
+                rotateCamera(0,-0.1f);
+                cout << "Rotated camera left\n";
+                break;
+            case ('4'):
+                rotateCamera(0,0.1f);
+                cout << "Rotated camera right\n";
+                break;
+            case ('5'):
+                rotateCamera(-0.1f,0);
+                cout << "Pitched camera up\n";
+                break;
+            case ('6'):
+                rotateCamera(0.1f,0);
+                cout << "Pitched camera down\n";
+                break;
+            case ('7'):
+                moveLight(Vector(0.0,-1.0f,0.0));
+                cout << "Moved light left\n";
+                break;
+            case ('8'):
+                moveLight(Vector(0.0,1.0f,0.0));
+                cout << "Moved light right\n";
+                break;
+            case ('9'):
+                moveLight(Vector(1.0f,0.0,0.0));
+                cout << "Moved light away\n";
+                break;
+            case ('0'):
+                moveLight(Vector(-1.0f,0.0,0.0));
+                cout << "Moved light closer\n";
+                break;
+            case ('a'):
+                algo = 0;
+                cout << "Using default Monte Carlo pathtracer algorithm\n";
+                break;
+            case ('b'):
+                algo = 1;
+                cout << "Now using interpolation algorithm\n";
+                break;
+            case ('r'):
+                {
+                    cout << "Rendering scene..." << endl;
 
-                        if(algo == 0){
-                            renderScene();
-                        }                    
-                        if(algo == 1){
-                            renderSceneInterpolate();
-                        }
-
-                        float frameTime = board->ReadTimer();
-                        board->StopTimer();
-                        cout << "Frame took " << frameTime << " seconds.\n";
-                        board->PlayTone((char*)"C5",1.0f);
-                        cout << "Ready for more input..." << endl;
+                    if(algo == 0){
+                        sf::Uint8* pixels = renderScene();
+                        sf::Texture texture;
+                        texture.create(480,360);
+                        sf::Sprite sprite(texture);
+                        texture.update(pixels);
+                        window.clear();
+                        window.draw(sprite);
+                        window.display();
+                    }                    
+                    if(algo == 1){
+                        renderSceneInterpolate();
                     }
-                    break;
-                default:
-                    break;
-            }
-        }
-        prevKey = key;
-    }
 
-    board->StopTimer();
+                    cout << "Ready for more input..." << endl;
+                }
+                break;
+            default:
+                break;
+        }
+    }
     char userIn;
     cout << "Input any key to stop...\n";
     cin >> userIn;
@@ -200,8 +193,9 @@ void Pathtracer::moveCamera(Vector v)
 }
 
 // renders the world with a monte carlo algorithm
-void Pathtracer::renderScene()
+sf::Uint8* Pathtracer::renderScene()
 {
+    sf::Uint8* pixels = new sf::Uint8[360*480*4];
     for(int c = 0; c < columns; c++)
     {
         for(int r = 0; r < rows; r++)
@@ -214,9 +208,14 @@ void Pathtracer::renderScene()
                 color = color + rayColor(ray, 0);
             }
             color = color / rpp; // colorMax(color)
-            board->WritePixel(c,r,to16BitColor(colorMax(color)));
+            int pixelIndex = 480*4*r+4*c;
+            pixels[pixelIndex] = (sf::Uint8) color.x; 
+            pixels[pixelIndex+1] = (sf::Uint8) color.y; 
+            pixels[pixelIndex+2] = (sf::Uint8) color.z;
+            pixels[pixelIndex+3] = 255; 
         }
     }
+    return pixels;
 }
 
 // renders the world and interpolates
@@ -238,7 +237,7 @@ void Pathtracer::renderSceneInterpolate()
             }
             color = colorMax(color / rpp);
             colors[r][c] = color;
-            board->WritePixel(c,r,to16BitColor(color));
+            // write color to pixel //todo
         }
     }
     for(int r = 0; r < rows-2; r+=2)
@@ -263,7 +262,7 @@ void Pathtracer::renderSceneInterpolate()
                 retColor = colorMax(color / rpp);
             }
             colors[r+1][c] = retColor;
-            board->WritePixel(c,r+1,to16BitColor(retColor));
+            // write color to pixel //todo
 
             nextColor = colors[r+2][c+2];
             retColor = Vector();
@@ -282,7 +281,7 @@ void Pathtracer::renderSceneInterpolate()
                 retColor = colorMax(color / rpp);
             }
             colors[r+1][c+1] = retColor;
-            board->WritePixel(c+1,r+1,to16BitColor(retColor));
+            // write color to pixel //todo
 
             nextColor = colors[r][c+2];
             retColor = Vector();
@@ -301,7 +300,7 @@ void Pathtracer::renderSceneInterpolate()
                 retColor = colorMax(color / rpp);
             }
             colors[r][c+1] = retColor;
-            board->WritePixel(c+1,r,to16BitColor(retColor));
+            // write color to pixel //todo
         }
     }
 }
@@ -321,7 +320,7 @@ void Pathtracer::renderSceneOptimized()
                 color = color + rayColorRR(ray, 0, probability);
             }
             color = color / rpp; // colorMax(color)
-            board->WritePixel(c,r,to16BitColor(colorMax(color)));
+            // write color to pixel //todo
         }
     }
 }

@@ -7,8 +7,6 @@
 #include <iostream>
 #include <random>
 #include <time.h>
-#include "DE1SoCfpga.h"
-#include "Devices.h"
 #include "Pathtracer.h"
 using namespace std;
 

@@ -1,10 +1,12 @@
 #ifndef PATHTRACER_H
 #define PATHTRACER_H
 
-#include "DE1SoCfpga.h"
-#include "Devices.h"
 #include "RayMath.h"
 #include "Camera.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/System/String.hpp>
+#include <SFML/Graphics/View.hpp>
+#include <SFML/System.hpp>
 
 struct Intersection;
 
@@ -74,7 +76,6 @@ class Pathtracer{ //todo - pathtracer will have a board w/ devices that it can c
         float fov;
         float halfViewWidth, halfViewHeight;
         int rows, columns;
-        Devices* board;
         Camera camera;
 
         // Info about the objects in the scene of the pathtracer
@@ -96,7 +97,7 @@ class Pathtracer{ //todo - pathtracer will have a board w/ devices that it can c
 
         void moveLight(Vector v);
 
-        void renderScene();
+        sf::Uint8* renderScene();
 
         void renderSceneOptimized();
 
@@ -105,7 +106,6 @@ class Pathtracer{ //todo - pathtracer will have a board w/ devices that it can c
         Intersection castRay(Ray r);
 
         Vector rayColor(Ray r, int bounces);
-
 
         Vector rayColorRR(Ray r, float p, int bounces);
 
