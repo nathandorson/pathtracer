@@ -39,28 +39,29 @@ Pathtracer::~Pathtracer()
 
 void Pathtracer::setup()
 {
-    scene.push_back(new Sphere(Vector(5.0, 0.0, 7.0), 1.0f, (float) 0.0, (float) 10.0, Vector(255,255,255)));
+    //scene.push_back(new Sphere(Vector(5.0, 0.0, 7.0), 1.0f, (float) 0.0, (float) 10.0, Vector(255,255,255)));
 
-//    scene.push_back(new Sphere(Vector(4.0, 1.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(255, 50, 255)));
-//    scene.push_back(new Sphere(Vector(6.0, -2.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(50, 255, 100)));
-//    scene.push_back(new Sphere(Vector(7.0, 0.0, 0.5), 1.5f, (float) 0.0, (float) 0.0, Vector(255, 50, 50)));
+    //scene.push_back(new Sphere(Vector(4.0, 1.0, 0.0), 1.0f, (float) 1.0, (float) 0.0, Vector(255, 255, 255)));
+    //scene.push_back(new Sphere(Vector(6.0, -2.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(240, 240, 240)));
+    //scene.push_back(new Sphere(Vector(7.0, 0.0, 0.5), 1.5f, (float) 0.0, (float) 0.0, Vector(200, 200, 200)));
 
-    scene.push_back(new Sphere(Vector(4.0, 1.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(255, 255, 255)));
-    scene.push_back(new Sphere(Vector(6.0, -2.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(200, 200, 200)));
-    scene.push_back(new Sphere(Vector(7.0, 0.0, 0.5), 1.5f, (float) 0.0, (float) 0.0, Vector(100, 100, 100)));
+    //scene.push_back(new Plane(Vector(0.0, 0.0, 7.0), Vector(0.0,0,-1.0), (float) 0.0, (float) 0.0, Vector(100,100,100)));  //ceiling
+    //scene.push_back(new Plane(Vector(8.0, 0.0, 0.0), Vector(-1.0,0.0,0.0), (float) 0.0, (float) 0.0, Vector(200, 255, 200)));//back wall
+    //scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(200, 200, 200)));  //floor
+    //scene.push_back(new Plane(Vector(-1.0, 0.0, 0.0), Vector(1.0,0,0.0), (float) 0.0, (float) 0.0, Vector(255, 255, 255)));//wall behind camera
+    //scene.push_back(new Plane(Vector(0.0, 4.0, 0.0), Vector(0.0,-1.0,0.0), (float) 0.0, (float) 0.0, Vector(200,200,255)));//right wall
+    //scene.push_back(new Plane(Vector(0.0, -4.0, 0.0), Vector(0.0,1.0,0.0), (float) 0.0, (float) 0.0, Vector(255,200,200)));//left wall
 
-//    scene.push_back(new Plane(Vector(0.0, 0.0, 7.0), Vector(0.0,0,-1.0), (float) 0.0, (float) 0.0, Vector(100,100,100)));  //ceiling
-//    scene.push_back(new Plane(Vector(8.0, 0.0, 0.0), Vector(-1.0,0.0,0.0), (float) 0.0, (float) 0.0, Vector(200,200,200)));//back wall
-//    scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(255,255,255)));  //floor
-//    scene.push_back(new Plane(Vector(-1.0, 0.0, 0.0), Vector(1.0,0,0.0), (float) 0.0, (float) 0.0, Vector(255, 255, 255)));//wall behind camera
-//    scene.push_back(new Plane(Vector(0.0, 4.0, 0.0), Vector(0.0,-1.0,0.0), (float) 0.0, (float) 0.0, Vector(150,150,150)));//right wall
-//    scene.push_back(new Plane(Vector(0.0, -4.0, 0.0), Vector(0.0,1.0,0.0), (float) 0.0, (float) 0.0, Vector(150,150,150)));//left wall
-    scene.push_back(new Plane(Vector(0.0, 0.0, 7.0), Vector(0.0,0,-1.0), (float) 0.0, (float) 0.0, Vector(100,100,100)));  //ceiling
-    scene.push_back(new Plane(Vector(8.0, 0.0, 0.0), Vector(-1.0,0.0,0.0), (float) 0.0, (float) 0.0, Vector(100, 255, 100)));//back wall
-    scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(100, 100, 100)));  //floor
-    scene.push_back(new Plane(Vector(-1.0, 0.0, 0.0), Vector(1.0,0,0.0), (float) 0.0, (float) 0.0, Vector(255, 255, 255)));//wall behind camera
-    scene.push_back(new Plane(Vector(0.0, 4.0, 0.0), Vector(0.0,-1.0,0.0), (float) 0.0, (float) 0.0, Vector(100,100,255)));//right wall
-    scene.push_back(new Plane(Vector(0.0, -4.0, 0.0), Vector(0.0,1.0,0.0), (float) 0.0, (float) 0.0, Vector(255,100,100)));//left wall
+    //scene.push_back(new Plane(Vector(-1.0,0.0,0.0), Vector(1.0,1.0,0.0), (float) 1.0f, 0.0, Vector(255,255,255)));
+    scene.push_back(new Sphere(Vector(20.0, 110.0, 20.0), 45.0f, (float) 0.0, (float) 7.0, Vector(255,255,255)));
+
+    scene.push_back(new Sphere(Vector(4.0, 1.0, 0.0), 1.0f, (float) 1.0, (float) 0.0, Vector(255, 255, 255)));
+    scene.push_back(new Sphere(Vector(6.0, -2.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(240, 240, 240)));
+    scene.push_back(new Sphere(Vector(7.0, 0.0, 0.5), 1.5f, (float) 0.0, (float) 0.0, Vector(200, 200, 200)));
+    scene.push_back(new Sphere(Vector(7.0, -5.0, 1.0), 2.0f, (float) 0.5, (float) 0.0, Vector(255, 200, 200)));
+    scene.push_back(new Sphere(Vector(14.0, 2.0, 1.0), 2.0f, (float) 0.5, (float) 0.0, Vector(255, 200, 255)));
+
+    scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(200, 200, 200)));  //floor
 }
 
 void Pathtracer::main()
@@ -88,7 +89,6 @@ void Pathtracer::main()
     cout << "------------------------------------------------------" << endl;
 
     sf::RenderWindow window(sf::VideoMode(480, 360), "Pathtracer");
-
 
     while(key != 'c')
     {
@@ -149,14 +149,7 @@ void Pathtracer::main()
                     cout << "Rendering scene..." << endl;
 
                     if(algo == 0){
-                        sf::Uint8* pixels = renderScene();
-                        sf::Texture texture;
-                        texture.create(480,360);
-                        sf::Sprite sprite(texture);
-                        texture.update(pixels);
-                        window.clear();
-                        window.draw(sprite);
-                        window.display();
+                        renderScene(window);
                     }                    
                     if(algo == 1){
                         renderSceneInterpolate();
@@ -193,29 +186,39 @@ void Pathtracer::moveCamera(Vector v)
 }
 
 // renders the world with a monte carlo algorithm
-sf::Uint8* Pathtracer::renderScene()
+void Pathtracer::renderScene(sf::RenderWindow& window)
 {
     sf::Uint8* pixels = new sf::Uint8[360*480*4];
-    for(int c = 0; c < columns; c++)
-    {
-        for(int r = 0; r < rows; r++)
+    sf::Texture texture;
+    texture.create(480,360);
+    sf::Sprite sprite(texture);
+    Vector** totalColors = new Vector*[rows];
+    for(int r = 0; r < rows; r++) {
+        totalColors[r] = new Vector[columns];
+    }
+    for(int frame = 1; frame <= rpp; frame++) {
+        for(int c = 0; c < columns; c++)
         {
-            Vector color = Vector();
-            for(int n = 0; n < rpp; n++)
+            for(int r = 0; r < rows; r++)
             {
                 //cout << "Shooting ray " << n << " for row " << r << " and column " << c << endl;
                 Ray ray = camera.getRandomRay(r, c);
-                color = color + rayColor(ray, 0);
+                Vector color = rayColor(ray, 0);
+                totalColors[r][c] = totalColors[r][c] + color; // colorMax(color)
+                int pixelIndex = 480*4*r+4*c;
+                Vector avgColor = totalColors[r][c] / (float) frame;
+                pixels[pixelIndex] = (sf::Uint8) avgColor.x; 
+                pixels[pixelIndex+1] = (sf::Uint8) avgColor.y; 
+                pixels[pixelIndex+2] = (sf::Uint8) avgColor.z;
+                pixels[pixelIndex+3] = 255; 
             }
-            color = color / rpp; // colorMax(color)
-            int pixelIndex = 480*4*r+4*c;
-            pixels[pixelIndex] = (sf::Uint8) color.x; 
-            pixels[pixelIndex+1] = (sf::Uint8) color.y; 
-            pixels[pixelIndex+2] = (sf::Uint8) color.z;
-            pixels[pixelIndex+3] = 255; 
+            texture.update(pixels);
+            //window.clear();
+            window.draw(sprite);
+            window.display();
         }
+
     }
-    return pixels;
 }
 
 // renders the world and interpolates
@@ -554,7 +557,8 @@ void Sphere::moveBy(Vector v)
 Plane::Plane(Vector p, Vector n, float s, float e, Vector col)
 {
     point = p;
-    norm = n;
+    float magnitude = pow(pow(n.x,2)+pow(n.y,2)+pow(n.z,2),2);
+    norm = Vector(n.x / magnitude, n.y / magnitude, n.z / magnitude);
     specularity = s;
     emittance = e;
     color = col;

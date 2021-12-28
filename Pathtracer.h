@@ -97,7 +97,7 @@ class Pathtracer{ //todo - pathtracer will have a board w/ devices that it can c
 
         void moveLight(Vector v);
 
-        sf::Uint8* renderScene();
+        void renderScene(sf::RenderWindow& window);
 
         void renderSceneOptimized();
 
