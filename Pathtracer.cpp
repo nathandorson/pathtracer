@@ -47,21 +47,20 @@ void Pathtracer::setup()
 
     //scene.push_back(new Plane(Vector(0.0, 0.0, 7.0), Vector(0.0,0,-1.0), (float) 0.0, (float) 0.0, Vector(100,100,100)));  //ceiling
     //scene.push_back(new Plane(Vector(8.0, 0.0, 0.0), Vector(-1.0,0.0,0.0), (float) 0.0, (float) 0.0, Vector(200, 255, 200)));//back wall
-    //scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(200, 200, 200)));  //floor
     //scene.push_back(new Plane(Vector(-1.0, 0.0, 0.0), Vector(1.0,0,0.0), (float) 0.0, (float) 0.0, Vector(255, 255, 255)));//wall behind camera
     //scene.push_back(new Plane(Vector(0.0, 4.0, 0.0), Vector(0.0,-1.0,0.0), (float) 0.0, (float) 0.0, Vector(200,200,255)));//right wall
     //scene.push_back(new Plane(Vector(0.0, -4.0, 0.0), Vector(0.0,1.0,0.0), (float) 0.0, (float) 0.0, Vector(255,200,200)));//left wall
 
     //scene.push_back(new Plane(Vector(-1.0,0.0,0.0), Vector(1.0,1.0,0.0), (float) 1.0f, 0.0, Vector(255,255,255)));
+    scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(200, 200, 200)));  //floor
     scene.push_back(new Sphere(Vector(20.0, 110.0, 20.0), 45.0f, (float) 0.0, (float) 7.0, Vector(255,255,255)));
 
-    scene.push_back(new Sphere(Vector(4.0, 1.0, 0.0), 1.0f, (float) 1.0, (float) 0.0, Vector(255, 255, 255)));
-    scene.push_back(new Sphere(Vector(6.0, -2.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(240, 240, 240)));
+    scene.push_back(new Sphere(Vector(4.0, 1.0, 1.0), 3.0f, (float) 1.0, (float) 0.0, Vector(255, 255, 255)));
+    //scene.push_back(new Sphere(Vector(6.0, -2.0, 0.0), 1.0f, (float) 0.0, (float) 0.0, Vector(240, 240, 240)));
     scene.push_back(new Sphere(Vector(7.0, 0.0, 0.5), 1.5f, (float) 0.0, (float) 0.0, Vector(200, 200, 200)));
     scene.push_back(new Sphere(Vector(7.0, -5.0, 1.0), 2.0f, (float) 0.5, (float) 0.0, Vector(255, 200, 200)));
-    scene.push_back(new Sphere(Vector(14.0, 2.0, 1.0), 2.0f, (float) 0.5, (float) 0.0, Vector(255, 200, 255)));
+    //scene.push_back(new Sphere(Vector(14.0, 2.0, 1.0), 2.0f, (float) 0.5, (float) 0.0, Vector(255, 200, 255)));
 
-    scene.push_back(new Plane(Vector(0.0, 0.0, -1.0), Vector(0.0,0,1.0), (float) 0.0, (float) 0.0, Vector(200, 200, 200)));  //floor
 }
 
 void Pathtracer::main()
@@ -206,7 +205,7 @@ void Pathtracer::renderScene(sf::RenderWindow& window)
                 Vector color = rayColor(ray, 0);
                 totalColors[r][c] = totalColors[r][c] + color; // colorMax(color)
                 int pixelIndex = 480*4*r+4*c;
-                Vector avgColor = totalColors[r][c] / (float) frame;
+                Vector avgColor = totalColors[r][c] / ((float) frame);
                 pixels[pixelIndex] = (sf::Uint8) avgColor.x; 
                 pixels[pixelIndex+1] = (sf::Uint8) avgColor.y; 
                 pixels[pixelIndex+2] = (sf::Uint8) avgColor.z;
@@ -354,8 +353,6 @@ Vector Pathtracer::rayColor(Ray r, int bounces)
 
     if(shapeHit->emittance >= 1.0)
     {   
-        //cout << "Hit: ";
-        //intersect.pt.print();
         return shapeHit->color * shapeHit->emittance;
     }
 
@@ -366,15 +363,17 @@ Vector Pathtracer::rayColor(Ray r, int bounces)
         normal = normal * -1.0;
     }
 
-    //calculate diffuse color
-    Vector diffColor = shapeHit->color * shapeHit->emittance; //for ambient lighting
+    //calculate diffuse color if shape is diffuse at all
     Vector thisColor = shapeHit->color;
-    Vector diffuseDirection = randomHemisphereVector(normal);
-    Vector hitColor = rayColor(Ray(intersectPt, diffuseDirection), bounces);
-    diffColor = diffColor + colorMultiply(thisColor, hitColor) * dot(normal, diffuseDirection) * 2.0f;
-
-    //calculate specular color if shape has specular reflections
+    Vector diffColor = thisColor * shapeHit->emittance; //for ambient lighting
     float specularity = shapeHit->specularity;
+    if(specularity < 1.0f)
+    {
+        Vector diffuseDirection = randomHemisphereVector(normal);
+        Vector hitColor = rayColor(Ray(intersectPt, diffuseDirection), bounces);
+        diffColor = diffColor + colorMultiply(thisColor, hitColor) * dot(normal, diffuseDirection) * 2.0f;
+    }
+    //calculate specular color if shape has specular reflections
     Vector specColor = Vector();
     if(specularity > 0.0f)
     {

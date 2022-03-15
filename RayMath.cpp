@@ -77,7 +77,7 @@ Vector randomVector()
     float u = (float) rand()/RAND_MAX;
     float v = (float) rand()/RAND_MAX;
     float theta = u * 2.0 * M_PI;
-    float phi = acos(2.0 * v - 1.0);
+    float phi = acos(1.0 - 2.0 * v);
     float sinPhi = sin(phi);
     return Vector(sinPhi * cos(theta), sinPhi * sin(theta), cos(phi));
 }
